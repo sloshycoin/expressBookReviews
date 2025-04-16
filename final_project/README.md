@@ -45,3 +45,24 @@ Final project for IBM Backend Development with NodeJS and Express
    - Please take a screenshot of the same and save it with the name 6-register.png for submitting under 6.for the Peer Review Assignment.
 
    **Hint** The code should take the ‘username’ and ‘password’ provided in the body of the request for registration. If the username already exists, it must mention the same & must also show other errors like eg. when username &/ password are not provided.
+
+7. Complete the code for logging in as a registered user.
+
+   - Test the output on Postman.
+   - Please take a screenshot of the same and save it with the name 7-login.png for submitting under 7.for the Peer Review Assignment.
+
+   **Hint** The code must validate and sign in a customer based on the username and password created in Exercise 6. It must also save the user credentials for the session as a JWT. As you are required to login as a customer, while testing the output on Postman, use the endpoint as "customer/login"
+
+8. Complete the code for adding or modifying a book review.
+
+   - Test the output on Postman.
+   - Please take a screenshot of the same and save it with the name 8-reviewadded.png for submitting under 8.for the Peer Review Assignment.
+
+   **Hint** You have to give a review as a request query & it must get posted with the username (stored in the session) posted. If the same user posts a different review on the same ISBN, it should modify the existing review. If another user logs in and posts a review on the same SBN, it will get added as a different review under the same ISBN.
+
+9. Complete the code for deleting a book review under regd_users.delete("/auth/review/:isbn", (req, res) => {
+
+   - Test the output on Postman.
+   - Please take a screenshot of the same and save it with the name 9-deletereview.png for submitting under 9.for the Peer Review Assignment.
+
+   **Hint** Filter & delete the reviews based on the session username, so that a user can delete only his/her reviews and not other users’.
