@@ -1,68 +1,214 @@
-# Final Project
+# Book Review Application
 
-Final project for IBM Backend Development with NodeJS and Express
+A Node.js Express application for reviewing books with JWT authentication.
 
-## Tasks
+## Getting Started
 
-1. Complete the code for getting the list of books available in the shop under `public_users.get('/',function (req, res) {`.
+1. Install dependencies:
+   ```
+   npm install
+   ```
 
-   - Run npm install for installing the required modules & start the server.
-   - Test the output on Postman.
-   - Please take a screenshot of the same and save it with the name 1-getallbooks.png for submitting under 1.for the Peer Review Assignment.
+2. Start the server:
+   ```
+   npm start
+   ```
 
-   **Hint** Use the JSON.stringify method for displaying the output neatly.
+3. Access the web application at http://localhost:5000
 
-2. Complete the code for getting the book details based on ISBN under `public_users.get('/isbn/:isbn',function (req, res) {`.
+## API Documentation
 
-   - Test the output on Postman.
-   - Please take a screenshot of the same and save it with the name 2-gedetailsISBN.png for submitting under 2.for the Peer Review Assignment.
+### Public Endpoints
 
-   **Hint** Retrieve the ISBN from the request parameters
+#### Get All Books
+- **URL:** `/`
+- **Method:** `GET`
+- **Description:** Returns all books in the database.
+- **Sample Request:**
+  ```
+  GET http://localhost:5000/
+  ```
+- **Sample Response:**
+  ```json
+  {
+    "1": {"author": "Chinua Achebe", "title": "Things Fall Apart", "reviews": {}},
+    "2": {"author": "Hans Christian Andersen", "title": "Fairy tales", "reviews": {}}
+    // More books...
+  }
+  ```
 
-3. Complete the code for getting the book details based on the author under `public_users.get('/author/:author',function (req, res) {`.
+#### Get Book by ISBN
+- **URL:** `/isbn/:isbn`
+- **Method:** `GET`
+- **Description:** Returns a specific book by its ISBN.
+- **Sample Request:**
+  ```
+  GET http://localhost:5000/isbn/1
+  ```
+- **Sample Response:**
+  ```json
+  {
+    "author": "Chinua Achebe",
+    "title": "Things Fall Apart",
+    "reviews": {}
+  }
+  ```
 
-   - Test the output on Postman.
-   - Please take a screenshot of the same and save it with the name 3-getbooksbyauthor.png for submitting under 3.for the Peer Review Assignment.
+#### Get Books by Author
+- **URL:** `/author/:author`
+- **Method:** `GET`
+- **Description:** Returns all books by a specific author.
+- **Sample Request:**
+  ```
+  GET http://localhost:5000/author/Chinua%20Achebe
+  ```
+- **Sample Response:**
+  ```json
+  [
+    {
+      "author": "Chinua Achebe",
+      "title": "Things Fall Apart",
+      "reviews": {}
+    }
+  ]
+  ```
 
-   **Hint** - Obtain all the keys for the ‘books’ object. - Iterate through the ‘books’ array & check the author matches the one provided in the request parameters.
+#### Get Books by Title
+- **URL:** `/title/:title`
+- **Method:** `GET`
+- **Description:** Returns all books with matching title (partial match).
+- **Sample Request:**
+  ```
+  GET http://localhost:5000/title/Fall
+  ```
+- **Sample Response:**
+  ```json
+  [
+    {
+      "author": "Chinua Achebe",
+      "title": "Things Fall Apart",
+      "reviews": {}
+    }
+  ]
+  ```
 
-4. Complete the code for getting the book details based on the title under `public_users.get('/title/:title',function (req, res) {`.
+#### Get Book Reviews
+- **URL:** `/review/:isbn`
+- **Method:** `GET`
+- **Description:** Returns all reviews for a specific book.
+- **Sample Request:**
+  ```
+  GET http://localhost:5000/review/1
+  ```
+- **Sample Response:**
+  ```json
+  {
+    "user1": "Great book with a powerful message.",
+    "user2": "A classic that stands the test of time."
+  }
+  ```
 
-   - Test the output on Postman.
-   - Please take a screenshot of the same and save it with the name 4-getbooksbytitle.png for submitting under 4.for the Peer Review Assignment.
+#### Register a New User
+- **URL:** `/register`
+- **Method:** `POST`
+- **Description:** Registers a new user in the system.
+- **Request Body:**
+  ```json
+  {
+    "username": "newuser",
+    "password": "password123"
+  }
+  ```
+- **Sample Response:**
+  ```json
+  {
+    "message": "User registered successfully"
+  }
+  ```
 
-   **Hint** This will be similar to Exercise 3
+### Authenticated Endpoints
 
-5. Complete the code for getting book reviews under `public_users.get('/review/:isbn',function (req, res) {`.
+#### User Login
+- **URL:** `/customer/login`
+- **Method:** `POST`
+- **Description:** Authenticates a user and returns a JWT token.
+- **Request Body:**
+  ```json
+  {
+    "username": "newuser",
+    "password": "password123"
+  }
+  ```
+- **Sample Response:**
+  ```json
+  {
+    "message": "Login successful",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+  ```
 
-   - Please take a screenshot of the same and save it with the name 5-getbookreview.png for submitting under 5.for the Peer Review Assignment.
+#### Add or Update a Book Review
+- **URL:** `/customer/auth/review/:isbn`
+- **Method:** `PUT`
+- **Description:** Adds or updates a review for a specific book.
+- **Authentication:** JWT token in Authorization header
+- **Request Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Request Body:**
+  ```json
+  {
+    "review": "This is my review of the book. I found it very engaging!"
+  }
+  ```
+- **Sample Response:**
+  ```json
+  {
+    "message": "Review added/updated successfully",
+    "book": {
+      "author": "Chinua Achebe",
+      "title": "Things Fall Apart",
+      "reviews": {
+        "newuser": "This is my review of the book. I found it very engaging!"
+      }
+    }
+  }
+  ```
 
-   **Hint** Get the book reviews based on ISBN provided in the request parameters.
+#### Delete a Book Review
+- **URL:** `/customer/auth/review/:isbn`
+- **Method:** `DELETE`
+- **Description:** Deletes a user's review for a specific book.
+- **Authentication:** JWT token in Authorization header
+- **Request Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Sample Response:**
+  ```json
+  {
+    "message": "Review deleted successfully"
+  }
+  ```
 
-6. Complete the code for registering a new user
+## Testing with Postman
 
-   - Test the output on Postman.
-   - Please take a screenshot of the same and save it with the name 6-register.png for submitting under 6.for the Peer Review Assignment.
+To test the API endpoints:
 
-   **Hint** The code should take the ‘username’ and ‘password’ provided in the body of the request for registration. If the username already exists, it must mention the same & must also show other errors like eg. when username &/ password are not provided.
+1. Start the server
+2. Import the provided Postman collection (if available)
+3. Test the public endpoints without authentication
+4. Register a user and login to get a JWT token
+5. Use the token in the Authorization header for authenticated endpoints
 
-7. Complete the code for logging in as a registered user.
+## Client-Side Implementation
 
-   - Test the output on Postman.
-   - Please take a screenshot of the same and save it with the name 7-login.png for submitting under 7.for the Peer Review Assignment.
+The client-side implementation provides a user interface for interacting with the Book Review API. It includes:
 
-   **Hint** The code must validate and sign in a customer based on the username and password created in Exercise 6. It must also save the user credentials for the session as a JWT. As you are required to login as a customer, while testing the output on Postman, use the endpoint as "customer/login"
+- User registration and login
+- Book search functionality (all books, by ISBN, author, or title)
+- Viewing book details and reviews
+- Adding, updating, and deleting reviews (when authenticated)
 
-8. Complete the code for adding or modifying a book review.
-
-   - Test the output on Postman.
-   - Please take a screenshot of the same and save it with the name 8-reviewadded.png for submitting under 8.for the Peer Review Assignment.
-
-   **Hint** You have to give a review as a request query & it must get posted with the username (stored in the session) posted. If the same user posts a different review on the same ISBN, it should modify the existing review. If another user logs in and posts a review on the same SBN, it will get added as a different review under the same ISBN.
-
-9. Complete the code for deleting a book review under regd_users.delete("/auth/review/:isbn", (req, res) => {
-
-   - Test the output on Postman.
-   - Please take a screenshot of the same and save it with the name 9-deletereview.png for submitting under 9.for the Peer Review Assignment.
-
-   **Hint** Filter & delete the reviews based on the session username, so that a user can delete only his/her reviews and not other users’.
+The Promise-based API calls are implemented in `/public/js/api.js` using Axios.
